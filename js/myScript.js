@@ -25,8 +25,6 @@ $(document).ready(function(){
       }
     });
   }
-
-  console.log(input);
 });
 });   
 var markers = [];
@@ -39,7 +37,6 @@ function initMap() {
     center: {lat: 37.7141454, lng: -122.25},
     zoom: 9
   });
-  console.log("Map Drawn");
   var geocoder = new google.maps.Geocoder();
   document.getElementById('submit').addEventListener('click', function() {
     geocodeAddress(geocoder, map);
@@ -75,7 +72,6 @@ function addMarker(location,movieName,address) {
   '<p id="movieName">'+"Movie Name: "+movieName+'</p>'
   '</body>';
     
-  console.log("Location is : "+ address);
   var marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -108,12 +104,16 @@ function geocodeAddress(geocoder, resultsMap) {
       deleteMarkers();
       var Alladdress = JSON.parse(msg);
       var length =  Object.keys(Alladdress).length;
-      console.log("No of address are:"+length);
       var address;
       for(var i=0;i<length;i++)
       {
-        address = Alladdress[i].Locations+", San Francisco Bay Area";
-        console.log("Address is here is:"+address);
+       if(Alladdress[i].Locations == "")
+        {
+          address = "San Francisco Bay Area";
+        }
+       else{
+          address = Alladdress[i].Locations+", San Francisco Bay Area";
+        }
         (function(myaddress) {
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
